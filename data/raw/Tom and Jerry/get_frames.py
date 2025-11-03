@@ -1,26 +1,27 @@
 import cv2
 import math
 
-videoFilePath = 'Train Tom and jerry.mp4'
-saveFolder = 'Train/'
+videoFilePath = 'videos/Train Tom and jerry.mp4'
+saveFolder = 'frames/train_frames/'
+# saveFolder = 'frames/test_frames/'
+
 cap = cv2.VideoCapture(videoFilePath)
 frameRate = cap.get(5)
 
-i=0
+i = 0
 count = 0
-while(cap.isOpened()):
+
+while cap.isOpened():
     cap.set(cv2.CAP_PROP_POS_FRAMES, count)
     count += math.floor(frameRate)
     print(count)
 
     ret, frame = cap.read()
-    # cv2.imshow('frame',frame)
-    if (ret != True) or cv2.waitKey(1) & 0xFF == ord('q') or count>=8912:
+    if (ret != True) or cv2.waitKey(1) & 0xFF == ord('q') or count >= 8912:
         break
 
-    cv2.imwrite(saveFolder+"frame"+str(i)+".jpg",frame)
-    i+=1
-    # if count % math.floor(frameRate) == 0:
+    cv2.imwrite(saveFolder + "frame" + str(i) + ".jpg", frame)
+    i += 1
 
 cap.release()
 cv2.destroyAllWindows()

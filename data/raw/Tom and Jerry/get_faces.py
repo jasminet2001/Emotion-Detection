@@ -2,6 +2,7 @@ import os
 import cv2
 import numpy as np
 
+
 video_path = 'videos/train/'
 # video_path = 'videos/test/'
 
@@ -26,7 +27,6 @@ def detect(character, video, show_video=True, interval_seconds=3):
     # determine frame interval (based on FPS)
     fps = cap.get(cv2.CAP_PROP_FPS)
     frame_interval = int(fps * interval_seconds)
-
     frame_count = 0
 
     while True:

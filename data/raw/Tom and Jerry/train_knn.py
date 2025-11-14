@@ -38,13 +38,11 @@ arr_one, arr_two, label_names = load_data()
 # print(f"Labels array shape: {arr_two.shape}")  # (num_images,)
 
 #Testing
-# Split data to see how well the model learned
 X_train, X_test, y_train, y_test = train_test_split(arr_one, arr_two, test_size=0.2, random_state=42, stratify=arr_two)
 
 print("Training k-NN model...")
 # n_neighbors=5 is a good starting point.
-# You can tune this number to get better accuracy.
-model = KNeighborsClassifier(n_neighbors=5)
+model = KNeighborsClassifier(n_neighbors=4)
 model.fit(X_train, y_train)
 
 # Accuracy
@@ -52,14 +50,12 @@ y_pred = model.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 print(f"Model Accuracy on Test Set: {accuracy * 100:.2f}%")
 
-#Train on ALL Data
-# Now that we know it works, we train a final model on 100% of the data
+#Train on all the data
 print("Training final model on all data...")
-final_model = KNeighborsClassifier(n_neighbors=5)
+final_model = KNeighborsClassifier(n_neighbors=4)
 final_model.fit(arr_one, arr_two)
 
-#Save the Model
-# Save the trained model and the label names to be used in your other script
+#Saving the Model
 print("Saving model and labels...")
 if not os.path.exists('models'):
     os.mkdir('models')

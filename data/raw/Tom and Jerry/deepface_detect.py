@@ -3,14 +3,14 @@ import cv2
 import numpy as np
 from deepface import DeepFace
 
-# Load your character info and Haar cascades
+
 characters = [
     {
         'name': "Tom",
         'cascade': 'models/tom.xml',
         'detect_color': (165, 91, 0)
     },
-    # ... add Jerry ...
+
 ]
 video_path = 'videos/test/some_test_video.mp4'
 

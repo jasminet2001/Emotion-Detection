@@ -2,8 +2,10 @@ import os
 import cv2
 import numpy as np
 
+video_path = 'videos/'
 
-video_path = 'videos/train/'
+
+# video_path = 'videos/train/'
 # video_path = 'videos/test/'
 
 
@@ -17,7 +19,8 @@ def get_dataset(path=video_path):
 def detect(character, video, show_video=True, interval_seconds=3):
     cap = cv2.VideoCapture(video_path + video)
     face_cascade = cv2.CascadeClassifier(character['cascade'])
-    results_path = os.path.join('faces/train/' + character['name'])
+    results_path = os.path.join('new_faces/' + character['name'])
+    # results_path = os.path.join('faces/train/' + character['name'])
     # results_path = os.path.join('faces/test/' + character['name'])
 
     # make a folder in results for our recognised faces
@@ -41,11 +44,14 @@ def detect(character, video, show_video=True, interval_seconds=3):
         if frame_count % frame_interval != 0:
             continue
 
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        gray = cv2.equalizeHist(gray)
+
         faces = face_cascade.detectMultiScale(
-            frame,
-            scaleFactor=1.10,
-            minNeighbors=40 if character['name'] == "Tom" else 20,
-            minSize=(24, 24),
+            gray,
+            scaleFactor=1.03,
+            minNeighbors=30 if character['name'] == "Tom" else 8,
+            minSize=(24, 24) if character['name'] == "Tom" else (15, 15),
             flags=cv2.CASCADE_SCALE_IMAGE
         )
 
@@ -100,27 +106,30 @@ def process(character):
 
 def main():
     # prepare our results folder
-    if not os.path.exists('faces'):
-        os.mkdir('faces')
+    if not os.path.exists('new_faces'):
+        os.mkdir('new_faces')
 
     # process all our videos to detect Tom & Jerry
-    characters = [
-        {
-            'name': "Tom",
-            'detect_color': (165, 91, 0),
-            'save': True,
-            'cascade': 'haar_cascades/tom.xml'
-        },
-        {
-            'name': "Jerry",
-            'detect_color': (165, 100, 0),
-            'save': True,
-            'cascade': 'haar_cascades/jerry.xml'
-        }
-    ]
+    Tom = {
+        'name': "Tom",
+        'detect_color': (165, 91, 0),
+        'save': True,
+        'cascade': 'haar_cascades/tom.xml'
+    }
+
+    Jerry = {
+        'name': "Jerry",
+        'detect_color': (165, 100, 0),
+        'save': True,
+        'cascade': 'haar_cascades/jerry.xml'
+    }
+
+    characters = [Tom, Jerry]
 
     # process characters...
-    [process(character) for character in characters]
+    # [process(character) for character in characters]
+    # process(Tom)
+    process(Jerry)
     print('done')
 
 
